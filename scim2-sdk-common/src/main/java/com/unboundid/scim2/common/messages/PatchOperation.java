@@ -55,10 +55,16 @@ import java.util.List;
 @JsonSubTypes({
     @JsonSubTypes.Type(value = PatchOperation.AddOperation.class,
         name="add"),
+    @JsonSubTypes.Type(value = PatchOperation.AddOperation.class,
+        name="Add"),
     @JsonSubTypes.Type(value = PatchOperation.RemoveOperation.class,
         name="remove"),
+    @JsonSubTypes.Type(value = PatchOperation.RemoveOperation.class,
+        name="Remove"),
     @JsonSubTypes.Type(value = PatchOperation.ReplaceOperation.class,
-        name="replace")})
+        name="replace"),
+    @JsonSubTypes.Type(value = PatchOperation.ReplaceOperation.class,
+        name="Replace")})
 public abstract class PatchOperation
 {
   static final class AddOperation extends PatchOperation
@@ -92,18 +98,21 @@ public abstract class PatchOperation
             "value field must be a JSON object containing the attributes to " +
                 "add");
       }
-      if(path != null)
-      {
-        for (Path.Element element : path)
-        {
-          if(element.getValueFilter() != null)
-          {
-            throw BadRequestException.invalidPath(
-                "path field for add operations must not include any value " +
-                    "selection filters");
-          }
-        }
-      }
+      // DJL: This is valid according to RFC 7644 (https://tools.ietf.org/html/rfc7644#section-3.5.2)
+      // At least it's not obviously invalid, and Microsoft AD is sending Add operations with
+      // value filters (e.g. "phoneNumbers[type eq \"mobile\"].value")
+//      if(path != null)
+//      {
+//        for (Path.Element element : path)
+//        {
+//          if(element.getValueFilter() != null)
+//          {
+//            throw BadRequestException.invalidPath(
+//                "path field for add operations must not include any value " +
+//                    "selection filters");
+//          }
+//        }
+//      }
       this.value = value;
     }
 
