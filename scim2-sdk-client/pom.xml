@@ -21,9 +21,9 @@
         <groupId>com.unboundid.product.scim2</groupId>
         <version>2.3.3.GT-SNAPSHOT</version>
     </parent>
-    <artifactId>scim2-sdk-client :: ${project.version}</artifactId>
+    <artifactId>scim2-sdk-client</artifactId>
     <packaging>jar</packaging>
-    <name>UnboundID SCIM2 SDK Client</name>
+    <name>UnboundID SCIM2 SDK Client :: ${project.version}</name>
     <description>
       The UnboundID SCIM2 SDK is a library that may be used to interact with various
       types of SCIM-enabled endpoints (such as the UnboundID server products) to
