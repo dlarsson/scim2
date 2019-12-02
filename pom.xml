@@ -146,6 +146,21 @@
         </plugins>
       </build>
     </profile>
+    <profile>
+        <id>grouptalk</id>
+        <distributionManagement>
+            <repository>
+                <id>grouptalk-s3-release-repo</id>
+                <name>Release repository</name>
+                <url>s3://maven.grouptalk.com/releases</url>
+            </repository>
+            <snapshotRepository>
+                <id>grouptalk-s3-snapshot-repo</id>
+                <name>Snapshot repository</name>
+                <url>s3://maven.grouptalk.com/snapshots</url>
+            </snapshotRepository>
+        </distributionManagement>
+    </profile>
   </profiles>
 
   <modules>
