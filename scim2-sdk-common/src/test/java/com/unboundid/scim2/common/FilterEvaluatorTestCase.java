@@ -225,6 +225,7 @@ public class FilterEvaluatorTestCase
                 "\"urn:pingidentity:schemas:baseSchema\"", true },
             new Object[] { "schemas[value eq " +
                 "\"urn:pingidentity:schemas:something\"]", false },
+            new Object[] { "addresses[type eq \"work\"].locality eq \"Hollywood\"", true },
         };
   }
 

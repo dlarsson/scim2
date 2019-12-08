@@ -21,6 +21,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.node.ValueNode;
 import com.unboundid.scim2.common.Path;
 import com.unboundid.scim2.common.exceptions.BadRequestException;
+import com.unboundid.scim2.common.filters.ComplexValueFilter;
 import com.unboundid.scim2.common.filters.Filter;
 import com.unboundid.scim2.common.filters.FilterType;
 
@@ -425,6 +426,11 @@ public class Parser
         }
         return b.toString();
       }
+      // Initial '.'? Just return it as a separate token
+      if (c == '.' && b.length() == 0) {
+         b.append((char)c);
+         return b.toString();
+      }
       if (c == '-' || c == '_' || c == '.' || c == ':' || c == '$' ||
           Character.isLetterOrDigit(c))
       {
@@ -569,6 +575,13 @@ public class Parser
           !expectsNewFilter(previousToken))
       {
         break;
+      }
+      else if (token.equals(".") && outputStack.lastElement().isComplexValueFilter())
+      {
+        ComplexValueFilter filter = (ComplexValueFilter) outputStack.pop();
+        outputStack.push(Filter.hasComplexValue(
+                filter.getAttributePath(),
+                Filter.and(filter.getValueFilter(), readFilter(reader, true))));
       }
       else if(expectsNewFilter(previousToken))
       {

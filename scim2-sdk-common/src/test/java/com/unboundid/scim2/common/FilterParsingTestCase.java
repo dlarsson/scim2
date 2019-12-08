@@ -112,6 +112,10 @@ public class FilterParsingTestCase
                 and(or(pr("title"), pr("email")), pr("userType")) },
             new Object[] { "not (title pr or email pr) and userType pr",
                 and(not(or(pr("title"), pr("email"))), pr("userType")) },
+            new Object[] { "phoneNumbers.value eq \"kalle\"",
+                eq("phoneNumbers.value", "kalle")},
+            new Object[] { "phoneNumbers[type eq \"mobile\"].value eq \"+46 1223344556\"",
+                hasComplexValue("phoneNumbers", and(eq("type", "mobile"), eq("value", "+46 1223344556")))},
         };
   }
 
