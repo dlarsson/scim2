@@ -93,6 +93,12 @@ public class ListResponseWriter<T extends ScimResource>
       // Close the resources array if currently writing it.
       jsonGenerator.writeEndArray();
     }
+    else
+    {
+      // DJL: Write an empty Resources if we didn't start write it yet
+      jsonGenerator.writeArrayFieldStart("Resources");
+      jsonGenerator.writeEndArray();
+    }
 
     Iterator<Map.Entry<String, JsonNode>> i = deferredFields.fields();
     while(i.hasNext())
