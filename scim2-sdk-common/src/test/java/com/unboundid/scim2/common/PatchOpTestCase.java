@@ -767,4 +767,29 @@ public class PatchOpTestCase
     Assert.assertEquals(patchOp.getValue(String.class), uri6.toString());
     Assert.assertEquals(patchOp.getPath(), Path.fromString("path1"));
   }
+
+  /**
+   * Make sure the remove operation allows a value field.
+   *
+   * @throws IOException error
+   * @throws ScimException error
+   */
+  @Test
+  public void getTestAlternateRemove() throws IOException, ScimException
+  {
+     PatchRequest patchOp = JsonUtils.getObjectReader().
+             forType(PatchRequest.class).
+             readValue("{  \n" +
+                     "  \"schemas\":[  \n" +
+                     "    \"urn:ietf:params:scim:api:messages:2.0:PatchOp\"\n" +
+                     "  ],\n" +
+                     "  \"Operations\":[  \n" +
+                     "    {  \n" +
+                     "      \"op\":\"remove\",\n" +
+                     "      \"path\":\"members\",\n" +
+                     "      \"value\": [{ \"value\": 2 }]\n" +
+                     "    }\n" +
+                     "  ]\n" +
+                     "}");
+  }
 }

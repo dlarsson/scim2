@@ -219,6 +219,10 @@ public abstract class PatchOperation
 
   static final class RemoveOperation extends PatchOperation
   {
+
+    @JsonProperty
+    private final JsonNode value;
+
     /**
      * Create a new remove patch operation.
      *
@@ -227,7 +231,8 @@ public abstract class PatchOperation
      */
     @JsonCreator
     private RemoveOperation(
-        @JsonProperty(value = "path", required = true) final Path path)
+        @JsonProperty(value = "path", required = true) final Path path,
+        @JsonProperty(value = "value", required = false) final JsonNode value)
         throws ScimException
     {
       super(path);
@@ -236,6 +241,7 @@ public abstract class PatchOperation
         throw BadRequestException.noTarget(
             "path field must not be null for remove operations");
       }
+      this.value = value;
     }
 
     /**
@@ -245,6 +251,15 @@ public abstract class PatchOperation
     public PatchOpType getOpType()
     {
       return PatchOpType.REMOVE;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonNode getJsonNode()
+    {
+      return value != null ? value.deepCopy() : null;
     }
 
     /**
@@ -1330,7 +1345,7 @@ public abstract class PatchOperation
   {
     try
     {
-      return new RemoveOperation(path);
+      return new RemoveOperation(path, null);
     }
     catch (ScimException e)
     {
